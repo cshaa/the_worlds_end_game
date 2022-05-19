@@ -1,0 +1,123 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://parallax 0.png" type="Texture" id=2]
+[ext_resource path="res://PlayerShip.gd" type="Script" id=3]
+[ext_resource path="res://parallax 1.png" type="Texture" id=4]
+[ext_resource path="res://parallax 2.png" type="Texture" id=5]
+[ext_resource path="res://Red_Ship_Space.png" type="Texture" id=6]
+
+[sub_resource type="ParticlesMaterial" id=1]
+lifetime_randomness = 0.85
+flag_disable_z = true
+direction = Vector3( 0, 0, 0 )
+spread = 30.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 39.22
+initial_velocity_random = 0.01
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+
+[sub_resource type="ParticlesMaterial" id=2]
+lifetime_randomness = 0.85
+flag_disable_z = true
+direction = Vector3( 0, 0, 0 )
+spread = 30.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 39.22
+initial_velocity_random = 0.01
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+
+[sub_resource type="ParticlesMaterial" id=3]
+lifetime_randomness = 0.85
+flag_disable_z = true
+direction = Vector3( 0, 0, 0 )
+spread = 30.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 39.22
+initial_velocity_random = 0.01
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+
+[sub_resource type="ParticlesMaterial" id=4]
+lifetime_randomness = 0.85
+flag_disable_z = true
+direction = Vector3( 0, 0, 0 )
+spread = 30.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 39.22
+initial_velocity_random = 0.01
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+
+[node name="World" type="Node2D"]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.1, 0.1 )
+motion_mirroring = Vector2( 1200, 1200 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
+scale = Vector2( 2, 2 )
+texture = ExtResource( 2 )
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.2, 0.2 )
+motion_mirroring = Vector2( 1200, 1200 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/ParallaxLayer2"]
+scale = Vector2( 2, 2 )
+texture = ExtResource( 4 )
+
+[node name="ParallaxLayer3" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.5, 0.5 )
+motion_offset = Vector2( 600, 600 )
+motion_mirroring = Vector2( 1200, 1200 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/ParallaxLayer3"]
+scale = Vector2( 2, 2 )
+texture = ExtResource( 5 )
+
+[node name="PlayerShip" type="Sprite" parent="."]
+position = Vector2( 189, 200 )
+texture = ExtResource( 6 )
+script = ExtResource( 3 )
+
+[node name="Camera" type="Camera2D" parent="PlayerShip"]
+current = true
+
+[node name="Thrusters" type="Node2D" parent="PlayerShip"]
+z_index = -1
+
+[node name="rcs_right" type="Particles2D" parent="PlayerShip/Thrusters"]
+emitting = false
+amount = 250
+lifetime = 5.0
+local_coords = false
+process_material = SubResource( 1 )
+
+[node name="rcs_left" type="Particles2D" parent="PlayerShip/Thrusters"]
+emitting = false
+amount = 250
+lifetime = 5.0
+local_coords = false
+process_material = SubResource( 2 )
+
+[node name="rcs_fwd" type="Particles2D" parent="PlayerShip/Thrusters"]
+emitting = false
+amount = 250
+lifetime = 5.0
+local_coords = false
+process_material = SubResource( 3 )
+
+[node name="rcs_bwd" type="Particles2D" parent="PlayerShip/Thrusters"]
+emitting = false
+amount = 250
+lifetime = 5.0
+local_coords = false
+process_material = SubResource( 4 )
+
+[node name="cursooor" type="Sprite" parent="."]
+texture = ExtResource( 1 )
