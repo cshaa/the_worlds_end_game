@@ -8,7 +8,7 @@ var oxygen = 100
 var powerSupply = 60
 var powerSupplyTarget = 70
 var powerConsumption = 0
-var matter = 100
+var matter = 90
 var health = 100
 
 var oxygenatorActive = true
@@ -21,6 +21,10 @@ var drillGlitching = false
 
 var explosionAlarm = false
 var shipExploded = false
+
+var bloodOxygenMax = 20
+var bloodOxygen = bloodOxygenMax
+var suffocated = false
 
 var rcsConsumption = 3
 var pivotingConsumption = 1
@@ -87,6 +91,17 @@ func updateResources(delta: float):
 		oxygenatorProduction * int(oxygenatorActive)
 	)
 	
+	oxygen = clamp(oxygen, 0, pressure)
+	
+	if oxygen <= 0:
+		bloodOxygen -= delta * respirationRate
+	
+	if bloodOxygen <= 0:
+		suffocated = true
+	elif oxygen > 0:
+		bloodOxygen += delta * respirationRate * 2
+		bloodOxygen = min(bloodOxygen, bloodOxygenMax)
+	
 	powerConsumption = (
 		ionFwdConsumption * int(P.ion_fwd) +
 		ionBwdConsumption * int(P.ion_bwd) +
@@ -131,7 +146,6 @@ func updateResources(delta: float):
 		drillGlitching = true
 	
 	pressure = clamp(pressure, 0, 100)
-	oxygen = clamp(oxygen, 0, pressure)
 	powerSupply = clamp(powerSupply, 0, 100)
 
 func updateMeters():
@@ -143,6 +157,8 @@ func updateMeters():
 	$Meters/Matter/Active.value = matter - reserveMass
 	$Meters/Hull/Base.value = health
 	$Meters/Hull/Active.value = health - 10
+	
+	$SuffocationEffect/ColorRect.color.a = 1 - bloodOxygen/bloodOxygenMax
 
 func handleAnimations():
 	if Interior.cursorOn: $Cursor.animation = 'on'

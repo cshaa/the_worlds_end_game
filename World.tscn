@@ -104,7 +104,7 @@ extents = Vector2( 14.5, 11.5 )
 flag_disable_z = true
 spread = 180.0
 gravity = Vector3( 0, 0, 0 )
-initial_velocity = 10.0
+initial_velocity = 50.0
 initial_velocity_random = 1.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
@@ -226,6 +226,7 @@ polygon = PoolVector2Array( 9, 2, 9, 5, 7, 4, 4, 4, 3, 7, -3, 7, -4, 4, -7, 4, -
 
 [node name="Drill" type="Area2D" parent="PlayerShip"]
 position = Vector2( 0, 7 )
+z_index = 10
 
 [node name="CollisionShape" type="CollisionShape2D" parent="PlayerShip/Drill"]
 position = Vector2( 0.5, 7.5 )
@@ -234,10 +235,11 @@ shape = SubResource( 10 )
 [node name="Particles" type="Particles2D" parent="PlayerShip/Drill"]
 position = Vector2( 0, 5 )
 emitting = false
-amount = 10
+amount = 80
 process_material = SubResource( 11 )
 
 [node name="Timer" type="Timer" parent="PlayerShip/Drill"]
+one_shot = true
 
 [node name="Asteroid1" type="RigidBody2D" parent="." groups=["asteroid"]]
 position = Vector2( 46, 317 )
@@ -249,5 +251,11 @@ texture = ExtResource( 1 )
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Asteroid1"]
 polygon = PoolVector2Array( 8.5, -29, 24.5, -18.1, 33.5, -6.8, 33.5, -4, 34, 6, 28.2, 19, 14.2, 30, 8.9, 30, -9.5, 31.5, -25.5, 25.8, -33, 16, -35, 9, -31.9, -6, -25.4, -19, -17.1, -25, -4.5, -30 )
 
+[node name="AsteroidCreator" type="Timer" parent="."]
+wait_time = 10.0
+autostart = true
+
 [connection signal="body_entered" from="PlayerShip/Drill" to="PlayerShip" method="_drill_contact"]
 [connection signal="body_exited" from="PlayerShip/Drill" to="PlayerShip" method="_drill_exit"]
+[connection signal="timeout" from="PlayerShip/Drill/Timer" to="PlayerShip" method="_drillingFinished"]
+[connection signal="timeout" from="AsteroidCreator" to="PlayerShip" method="_createAsteroid"]

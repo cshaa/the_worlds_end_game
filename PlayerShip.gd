@@ -27,12 +27,15 @@ var activeAsteroid: RigidBody2D = null
 var drillable = false
 var drilling = false
 
+var drillingTime = 5
+
 func _process(delta):
 	readInputs()
 	useDrill(delta)
 	disableInactiveInputs()
 	applyLinearForces(delta)
 	applyAngularForces(delta)
+	resolveDrilling()
 	fireThrusters(delta)
 
 
@@ -166,6 +169,17 @@ func useDrill(delta: float):
 			
 	if relVel.length() < 1 and abs(a) < 0.1:
 		drillable = true
+	
+	drilling = drillable and Game.drillActive
+
+
+func resolveDrilling():
+	if not drilling:
+		$Drill/Timer.stop()
+	elif $Drill/Timer.time_left == 0:
+		$Drill/Timer.start(drillingTime)
+
+
 
 func mousePos() -> Vector2:
 	return World.get_local_mouse_position()
@@ -187,7 +201,23 @@ func _drill_contact(body: Node2D):
 	if body.is_in_group("asteroid"):
 		activeAsteroid = body
 
-
 func _drill_exit(body):
 	if body == activeAsteroid:
 		activeAsteroid = null
+
+func _drillingFinished():
+	activeAsteroid.queue_free()
+	activeAsteroid = null
+	Game.matter = 100
+
+
+
+func _createAsteroid():
+	var type: int = randi() % 5 + 1
+	var node = load("res://Asteroid" + String(type) + ".tscn").instance() as RigidBody2D
+	World.add_child(node)
+	node.global_position = (
+		global_position +
+		(1000 * randf() + 500) * Vector2.UP.rotated(2*PI * randf())
+	)
+	node.linear_velocity = 80 * randf() * Vector2.UP.rotated(2*PI * randf())

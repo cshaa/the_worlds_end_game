@@ -182,3 +182,11 @@ scale = Vector2( 0.15, 0.15 )
 frames = SubResource( 1 )
 animation = "off"
 playing = true
+
+[node name="SuffocationEffect" type="Node2D" parent="."]
+z_index = 1000
+
+[node name="ColorRect" type="ColorRect" parent="SuffocationEffect"]
+margin_right = 1024.0
+margin_bottom = 600.0
+color = Color( 0, 0, 0, 0 )
