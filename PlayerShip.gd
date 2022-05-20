@@ -41,6 +41,15 @@ func readInputs():
 	rcs_right = Input.is_action_pressed("dash_right")
 	rcs_left = Input.is_action_pressed("dash_left")
 	pivoting = Input.is_action_pressed("pivot")
+	
+	if Game.shipExploded:
+		ion_fwd = false
+		ion_bwd = false
+		rcs_fwd = false
+		rcs_bwd = false
+		rcs_right = false
+		rcs_left = false
+		pivoting = false
 
 func disableInactiveInputs():
 	if Game.pressure == 0:

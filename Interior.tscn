@@ -1,10 +1,40 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://loď schematicky.png" type="Texture" id=1]
 [ext_resource path="res://inventory_bg.png" type="Texture" id=2]
 [ext_resource path="res://oxygenator on.png" type="Texture" id=3]
 [ext_resource path="res://oxygenator destroyed.png" type="Texture" id=4]
 [ext_resource path="res://oxygenator off.png" type="Texture" id=5]
+[ext_resource path="res://Interior.gd" type="Script" id=6]
+[ext_resource path="res://bh engine.png" type="Texture" id=7]
+[ext_resource path="res://bh engine alarm.png" type="Texture" id=8]
+[ext_resource path="res://bh engine destroyed.png" type="Texture" id=9]
+[ext_resource path="res://progress back.png" type="Texture" id=10]
+[ext_resource path="res://progress forward.png" type="Texture" id=11]
+[ext_resource path="res://gassifier off.png" type="Texture" id=12]
+[ext_resource path="res://gassifier on.png" type="Texture" id=13]
+[ext_resource path="res://gassifier destroyed.png" type="Texture" id=14]
+
+[sub_resource type="SpriteFrames" id=4]
+animations = [ {
+"frames": [ ExtResource( 7 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 9 ) ],
+"loop": true,
+"name": "destroyed",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 7 ), ExtResource( 8 ) ],
+"loop": true,
+"name": "alarm",
+"speed": 2.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 41.9643, 77.2857 )
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -29,7 +59,37 @@ animations = [ {
 "speed": 15.0
 } ]
 
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 31, 55 )
+
+[sub_resource type="SpriteFrames" id=5]
+animations = [ {
+"frames": [ ExtResource( 13 ) ],
+"loop": true,
+"name": "on",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 12 ) ],
+"loop": true,
+"name": "off",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 14 ) ],
+"loop": true,
+"name": "destroyed",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 13 ), ExtResource( 12 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 13 ), ExtResource( 12 ), ExtResource( 12 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 12 ), ExtResource( 13 ) ],
+"loop": true,
+"name": "glitching",
+"speed": 13.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 31.5, 62 )
+
 [node name="Interior" type="Node2D"]
+script = ExtResource( 6 )
 
 [node name="InventoryBg" type="Sprite" parent="."]
 position = Vector2( 212, 300 )
@@ -40,8 +100,70 @@ position = Vector2( 212, 250 )
 scale = Vector2( 0.608696, 0.608696 )
 texture = ExtResource( 1 )
 
-[node name="Oxygenator" type="AnimatedSprite" parent="."]
-position = Vector2( 211, 196 )
-frames = SubResource( 1 )
-animation = "on"
+[node name="BHEngine" type="AnimatedSprite" parent="."]
+position = Vector2( 213, 350 )
+scale = Vector2( 1.21739, 1.21739 )
+frames = SubResource( 4 )
 playing = true
+
+[node name="Matter" type="Node2D" parent="BHEngine"]
+position = Vector2( 672, 509 )
+
+[node name="Base" type="TextureProgress" parent="BHEngine/Matter"]
+step = 0.1
+value = 90.0
+texture_under = ExtResource( 10 )
+texture_progress = ExtResource( 10 )
+tint_under = Color( 0, 0, 0, 1 )
+tint_progress = Color( 0.388235, 0, 0, 1 )
+
+[node name="Active" type="TextureProgress" parent="BHEngine/Matter"]
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 121.0
+margin_bottom = 16.0
+step = 0.1
+value = 65.0
+texture_over = ExtResource( 11 )
+texture_progress = ExtResource( 10 )
+tint_over = Color( 0, 0, 0, 1 )
+tint_progress = Color( 1, 0.196078, 0.196078, 1 )
+
+[node name="BHEngineMinus" type="StaticBody2D" parent="."]
+position = Vector2( 204, 301 )
+scale = Vector2( 0.608696, 0.608696 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BHEngineMinus"]
+position = Vector2( -30.4642, 74 )
+shape = SubResource( 3 )
+
+[node name="BHEnginePlus" type="StaticBody2D" parent="."]
+position = Vector2( 258, 301 )
+scale = Vector2( 0.608696, 0.608696 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BHEnginePlus"]
+position = Vector2( -30.4642, 74 )
+shape = SubResource( 3 )
+
+[node name="Oxygenator" type="StaticBody2D" parent="."]
+position = Vector2( 211, 196 )
+
+[node name="Sprite" type="AnimatedSprite" parent="Oxygenator"]
+frames = SubResource( 1 )
+animation = "off"
+playing = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Oxygenator"]
+shape = SubResource( 2 )
+
+[node name="Gassifier" type="StaticBody2D" parent="."]
+position = Vector2( 293, 234 )
+
+[node name="Sprite" type="AnimatedSprite" parent="Gassifier"]
+frames = SubResource( 5 )
+animation = "off"
+playing = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Gassifier"]
+position = Vector2( 0.5, -3 )
+shape = SubResource( 6 )
