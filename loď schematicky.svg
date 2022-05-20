@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   sodipodi:docname="loď schematicky.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.90583672"
+     inkscape:cx="372.03173"
+     inkscape:cy="561.35945"
+     inkscape:window-width="1680"
+     inkscape:window-height="989"
+     inkscape:window-x="0"
+     inkscape:window-y="30"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <inkscape:path-effect
+       effect="mirror_symmetry"
+       start_point="58.691466,53.982029"
+       end_point="58.691466,71.618556"
+       center_point="58.691466,62.800292"
+       id="path-effect1813"
+       is_visible="true"
+       lpeversion="1.1"
+       mode="free"
+       discard_orig_path="false"
+       fuse_paths="false"
+       oposite_fuse="false"
+       split_items="false"
+       split_open="false" />
+    <inkscape:path-effect
+       effect="mirror_symmetry"
+       start_point="95.050183,216.56217"
+       end_point="161.80363,186.99692"
+       center_point="95.050183,186.99692"
+       id="path-effect1563"
+       is_visible="true"
+       lpeversion="1.1"
+       mode="vertical"
+       discard_orig_path="false"
+       fuse_paths="true"
+       oposite_fuse="false"
+       split_items="false"
+       split_open="false" />
+  </defs>
+  <g
+     inkscape:label="Vrstva 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:#000000;stroke:#3a3a3a;stroke-width:3.465;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 99.002763,216.56217 H 91.880956 L 76.54731,201.22852 V 184.81589 H 45.436445 l -10.824519,10.82452 -6.315191,-6.31519 v -31.89356 l 5.304317,-5.30432 10.574622,10.57463 23.818435,-23.81844 h 5.25926 l 11.409209,-11.40921 v -23.33489 l 8.413803,-8.413807 V 85.512136 l 5.926382,-5.926385 5.926387,5.926385 v 10.213487 l 8.4138,8.413807 v 23.33489 l 11.40921,11.40921 h 5.25926 l 23.81843,23.81844 10.57462,-10.57463 5.30432,5.30432 v 31.89356 l -6.31519,6.31519 -10.82452,-10.82452 h -31.11086 v 16.41263 l -15.33365,15.33365 z"
+       id="path869"
+       inkscape:path-effect="#path-effect1563"
+       inkscape:original-d="m 161.80363,184.53209 h -30.90636 v 17.91165 l -14.11843,14.11843 H 91.880956 L 76.54731,201.22852 V 184.81589 H 45.436445 l -10.824519,10.82452 -6.315191,-6.31519 v -31.89356 l 5.304317,-5.30432 10.574622,10.57463 23.818435,-23.81844 h 5.25926 l 11.409209,-11.40921 v -23.33489 l 8.413803,-8.413807 V 85.512136 l 11.919219,-11.919224 12.06705,12.06705"
+       transform="translate(7.496537,2.5669415)" />
+  </g>
+</svg>

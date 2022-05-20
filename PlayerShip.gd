@@ -1,6 +1,8 @@
 extends Sprite
+const GameClass = preload("res://Game.gd")
 
 onready var World = $"..";
+onready var Game = get_tree().root.get_child(0) as GameClass
 
 var v = Vector2()
 var a = 0
@@ -23,13 +25,13 @@ var rcs_cw = false
 
 func _process(delta):
 	readInputs()
+	disableInactiveInputs()
 	applyLinearForces(delta)
 	applyAngularForces(delta)
 	fireThrusters(delta)
 
 
 func readInputs():
-	pivoting = false
 	rcs_ccw = false
 	rcs_cw = false
 	ion_fwd = Input.is_action_pressed("thrust_forward")
@@ -40,6 +42,13 @@ func readInputs():
 	rcs_left = Input.is_action_pressed("dash_left")
 	pivoting = Input.is_action_pressed("pivot")
 
+func disableInactiveInputs():
+	if Game.pressure == 0:
+		pivoting = false
+		rcs_fwd = false
+		rcs_bwd = false
+		rcs_right = false
+		rcs_left = false
 
 func applyLinearForces(delta):
 	dir = Vector2.UP.rotated(rotation)
@@ -69,7 +78,7 @@ func applyAngularForces(delta):
 	var angleToTarget: float = angleDiff(dir.angle(), targetAngle)
 	
 	if pivoting:
-		if abs(a) <= 0.01 and abs(angleToTarget) <= 0.01:
+		if abs(a) <= 0.05 and abs(angleToTarget) <= 0.05:
 			a = 0
 			pivoting = false
 		else:
@@ -99,6 +108,9 @@ func fireThrusters(delta: float):
 	$Thrusters/rcs_ccw2.emitting = rcs_ccw
 	$Thrusters/rcs_cw1.emitting = rcs_cw
 	$Thrusters/rcs_cw2.emitting = rcs_cw
+	
+	$Thrusters/ion_fwd.visible = ion_fwd
+	$Thrusters/ion_bwd.visible = ion_bwd
 
 
 func mousePos() -> Vector2:
