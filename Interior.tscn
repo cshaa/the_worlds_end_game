@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://loď schematicky.png" type="Texture" id=1]
 [ext_resource path="res://inventory_bg.png" type="Texture" id=2]
@@ -14,6 +14,8 @@
 [ext_resource path="res://gassifier off.png" type="Texture" id=12]
 [ext_resource path="res://gassifier on.png" type="Texture" id=13]
 [ext_resource path="res://gassifier destroyed.png" type="Texture" id=14]
+[ext_resource path="res://drill on.png" type="Texture" id=15]
+[ext_resource path="res://drill off.png" type="Texture" id=16]
 
 [sub_resource type="SpriteFrames" id=4]
 animations = [ {
@@ -88,6 +90,27 @@ animations = [ {
 [sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 31.5, 62 )
 
+[sub_resource type="SpriteFrames" id=7]
+animations = [ {
+"frames": [ ExtResource( 15 ) ],
+"loop": true,
+"name": "on",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 16 ) ],
+"loop": true,
+"name": "off",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 16 ), ExtResource( 15 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 16 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 15 ) ],
+"loop": true,
+"name": "glitching",
+"speed": 6.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=8]
+extents = Vector2( 27.5, 64.5 )
+
 [node name="Interior" type="Node2D"]
 script = ExtResource( 6 )
 
@@ -150,7 +173,7 @@ position = Vector2( 211, 196 )
 
 [node name="Sprite" type="AnimatedSprite" parent="Oxygenator"]
 frames = SubResource( 1 )
-animation = "off"
+animation = "on"
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Oxygenator"]
@@ -161,9 +184,22 @@ position = Vector2( 293, 234 )
 
 [node name="Sprite" type="AnimatedSprite" parent="Gassifier"]
 frames = SubResource( 5 )
-animation = "off"
+animation = "on"
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Gassifier"]
 position = Vector2( 0.5, -3 )
 shape = SubResource( 6 )
+
+[node name="Drill" type="StaticBody2D" parent="."]
+position = Vector2( 120, 347 )
+rotation = 3.14159
+
+[node name="Sprite" type="AnimatedSprite" parent="Drill"]
+frames = SubResource( 7 )
+animation = "on"
+playing = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Drill"]
+position = Vector2( 0.5, -1.5 )
+shape = SubResource( 8 )

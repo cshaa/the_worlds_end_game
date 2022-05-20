@@ -5,14 +5,19 @@ onready var Interior = $ShipView/Viewport/Interior
 
 var pressure = 100
 var oxygen = 100
-var powerSupply = 50
-var powerSupplyTarget = 60
+var powerSupply = 60
+var powerSupplyTarget = 70
 var powerConsumption = 0
 var matter = 100
 var health = 100
 
-var oxygenatorActive = false
+var oxygenatorActive = true
 var gassifierActive = false
+var drillActive = false
+
+var oxygenatorGlitching = false
+var gassifierGlitching = false
+var drillGlitching = false
 
 var explosionAlarm = false
 var shipExploded = false
@@ -27,6 +32,7 @@ var oxygenatorConsumption = 20
 var gassifierMatterConsumption = 10
 var gassifierPowerConsumption = 60
 var gassifierProduction = 1
+var drillConsumption = 80
 
 var massToEnergy = 0.01
 var massToPower = 0.3
@@ -62,6 +68,10 @@ func updateResources(delta: float):
 		BH_mass = 1e99
 		powerSupplyTarget = 0
 	
+	if oxygenatorGlitching: oxygenatorActive = false
+	if gassifierGlitching: gassifierActive = false
+	if drillGlitching: drillActive = false
+	
 	
 	pressure += delta * (
 		rcsConsumption * (
@@ -81,7 +91,8 @@ func updateResources(delta: float):
 		ionFwdConsumption * int(P.ion_fwd) +
 		ionBwdConsumption * int(P.ion_bwd) +
 		oxygenatorConsumption * int(oxygenatorActive) +
-		gassifierPowerConsumption * int(gassifierActive)
+		gassifierPowerConsumption * int(gassifierActive) +
+		drillConsumption * int(drillActive)
 	)
 	
 	if gassifierActive:
@@ -113,6 +124,11 @@ func updateResources(delta: float):
 	
 	powerSupply = theoreticalMaxPower - BH_mass / massToPower
 	explosionAlarm = powerSupply > 100
+	
+	if powerConsumption > powerSupply:
+		oxygenatorGlitching = true
+		gassifierGlitching = true
+		drillGlitching = true
 	
 	pressure = clamp(pressure, 0, 100)
 	oxygen = clamp(oxygen, 0, pressure)

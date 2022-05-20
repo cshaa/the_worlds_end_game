@@ -1,4 +1,4 @@
-extends Sprite
+extends KinematicBody2D
 const GameClass = preload("res://Game.gd")
 
 onready var World = $"..";
@@ -23,8 +23,13 @@ var rcs_left = false
 var rcs_ccw = false
 var rcs_cw = false
 
+var activeAsteroid: RigidBody2D = null
+var drillable = false
+var drilling = false
+
 func _process(delta):
 	readInputs()
+	useDrill(delta)
 	disableInactiveInputs()
 	applyLinearForces(delta)
 	applyAngularForces(delta)
@@ -54,10 +59,19 @@ func readInputs():
 func disableInactiveInputs():
 	if Game.pressure == 0:
 		pivoting = false
+		rcs_ccw = false
+		rcs_cw = false
 		rcs_fwd = false
 		rcs_bwd = false
 		rcs_right = false
 		rcs_left = false
+	
+	if drilling and not drillable:
+		drilling = false
+	
+	if Game.oxygenatorGlitching or Game.gassifierGlitching or Game.drillGlitching:
+		ion_fwd = false
+		ion_bwd = false
 
 func applyLinearForces(delta):
 	dir = Vector2.UP.rotated(rotation)
@@ -74,7 +88,7 @@ func applyLinearForces(delta):
 	)
 	
 	v += impulse * delta
-	position += v * delta
+	move_and_slide(v)
 
 
 func applyAngularForces(delta):
@@ -104,6 +118,11 @@ func applyAngularForces(delta):
 			if impulse > 0: rcs_ccw = true
 			if impulse < 0: rcs_cw = true
 	
+	elif rcs_ccw:
+		a -= pivoting_torque * delta
+	elif rcs_cw:
+		a += pivoting_torque * delta
+	
 	rotation += a * delta
 
 
@@ -120,16 +139,55 @@ func fireThrusters(delta: float):
 	
 	$Thrusters/ion_fwd.visible = ion_fwd
 	$Thrusters/ion_bwd.visible = ion_bwd
+	
+	$Drill/Particles.emitting = drilling
 
+func useDrill(delta: float):
+	drillable = false
+	if activeAsteroid == null: return
+	
+	var relVel = (activeAsteroid.linear_velocity - v).rotated(-rotation)
+	if relVel.length() > 50: return
+	
+	if abs(a) < 0.1 and not pivoting:
+		a = 0
+	else:
+		if a > +0.1: rcs_ccw = true
+		if a < -0.1: rcs_cw = true
+	
+	if not ion_fwd and not rcs_fwd and not ion_bwd and not rcs_bwd:
+		if relVel.length() < 1:
+			v = activeAsteroid.linear_velocity
+		else:
+			rcs_left = relVel.x < -1
+			rcs_right = relVel.x > +1
+			rcs_bwd = relVel.y > +1
+			rcs_fwd = relVel.y < -1
+			
+	if relVel.length() < 1 and abs(a) < 0.1:
+		drillable = true
 
 func mousePos() -> Vector2:
 	return World.get_local_mouse_position()
 
 func standardAngle(a: float) -> float:
-	return fposmod(a, 2 * PI) - PI
+	return fposmod(a + PI, 2 * PI) - PI
 
 func angleDiff(a: float, b: float) -> float:
 	return standardAngle(b - a)
 	
 func distanceToStop(vel: float, acc: float) -> float:
 	return 3 * vel*vel / (2 * acc)
+
+func angleToBody(body: Node2D):
+	return position.direction_to(body.position).angle()
+
+
+func _drill_contact(body: Node2D):
+	if body.is_in_group("asteroid"):
+		activeAsteroid = body
+
+
+func _drill_exit(body):
+	if body == activeAsteroid:
+		activeAsteroid = null
